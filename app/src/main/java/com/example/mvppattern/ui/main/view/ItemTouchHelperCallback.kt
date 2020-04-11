@@ -1,8 +1,8 @@
-package com.example.mvppattern.ui.main.adapter
+package com.example.mvppattern.ui.main.view
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mvppattern.util.onItemTouchListenner
+import com.example.mvppattern.onItemTouchListenner
 
 class ItemTouchHelperCallback(private var mListenner: onItemTouchListenner) :
     ItemTouchHelper.Callback() {

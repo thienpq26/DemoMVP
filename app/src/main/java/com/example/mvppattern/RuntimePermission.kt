@@ -1,4 +1,4 @@
-package com.example.mvppattern.util
+package com.example.mvppattern
 
 import android.Manifest
 import android.app.Activity
@@ -6,8 +6,8 @@ import android.content.ContentValues
 import android.content.Intent
 import android.provider.MediaStore
 import android.widget.Toast
-import com.example.mvppattern.data.Student
-import com.example.mvppattern.data.repository.DBManager
+import com.example.mvppattern.data.database.model.Student
+import com.example.mvppattern.data.database.DBManager
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse

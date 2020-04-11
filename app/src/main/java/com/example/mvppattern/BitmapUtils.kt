@@ -1,4 +1,4 @@
-package com.example.mvppattern.util
+package com.example.mvppattern
 
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat

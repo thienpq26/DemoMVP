@@ -5,7 +5,7 @@ import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
-import com.example.mvppattern.data.repository.DBManager
+import com.example.mvppattern.data.database.DBManager
 
 class StudentsProvider : ContentProvider() {
 

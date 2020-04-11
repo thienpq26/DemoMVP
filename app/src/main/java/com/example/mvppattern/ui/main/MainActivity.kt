@@ -18,16 +18,16 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mvppattern.*
-import com.example.mvppattern.data.Student
+import com.example.mvppattern.data.database.model.Student
 import com.example.mvppattern.ui.createstudent.CreateStudentActivity
-import com.example.mvppattern.ui.main.adapter.ItemTouchHelperCallback
+import com.example.mvppattern.ui.main.view.ItemTouchHelperCallback
+import com.example.mvppattern.ui.main.view.MainView
 import com.example.sqlitedemo1.adapter.StudentsAdapter
-import com.example.mvppattern.data.repository.DBManager
-import com.example.mvppattern.util.*
+import com.example.mvppattern.data.database.DBManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_update_student.*
 
-class MainActivity : AppCompatActivity(), MainContract.View {
+class MainActivity : AppCompatActivity(), MainView {
 
     lateinit var arrST: ArrayList<Student>
     lateinit var studentsAdapter: StudentsAdapter
@@ -64,8 +64,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             recyclerviewStudent.apply {
                 layoutManager = LinearLayoutManager(this@MainActivity)
                 adapter = studentsAdapter
-                addOnItemClickListener(object :
-                    OnItemClickListener {
+                addOnItemClickListener(object : OnItemClickListener {
                     override fun onItemClick(position: Int, view: View) {
                         showDialogUpdate(position)
                     }
@@ -79,8 +78,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     private fun addItemTouchCallback(recyclerView: RecyclerView) {
         val callback: ItemTouchHelper.Callback =
-            ItemTouchHelperCallback(object :
-                onItemTouchListenner {
+            ItemTouchHelperCallback(object : onItemTouchListenner {
                 override fun onSwipe(position: Int) {
                     mainPresenter.receiveHandlerDeleteStudent(
                         this@MainActivity, "${DBManager.ID}=?",
@@ -129,13 +127,52 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             arrST[position].mEmail = textEmail.text.toString()
             arrST[position].mImage = BitmapUtils.getBytes(imageStudent.drawable.toBitmap())
             mainPresenter.receiveHandlerUpdateStudent(
-                this,
-                setContentValues(arrST[position]), "${DBManager.ID}=?",
+                this, setContentValues(arrST[position]), "${DBManager.ID}=?",
                 arrayOf("${arrST[position].mID}")
             )
         }
         dialog.setCancelable(false)
         dialog.show()
+    }
+
+    override fun showAllStudentSuccess(mList: ArrayList<Student>) {
+        arrST = mList
+        setAdapter(mList)
+    }
+
+    override fun showAllStudentFail() {
+        Toast.makeText(this, "Database null", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun deleteStudentSuccess(position: Int) {
+        studentsAdapter.onSwipeAdapter(position)
+        Toast.makeText(
+            this@MainActivity,
+            "Delete student success!",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    override fun deleteStudentFail() {
+        Toast.makeText(
+            this@MainActivity,
+            "Delete student fail!",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    override fun updateStudentSuccess() {
+        dialog.dismiss()
+        Toast.makeText(this, "Update student success!", Toast.LENGTH_SHORT).show()
+        setAdapter(arrST)
+    }
+
+    override fun updateStudentFail() {
+        Toast.makeText(
+            this@MainActivity,
+            "Update student fail!",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -148,45 +185,5 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun onDestroy() {
         super.onDestroy()
         mainPresenter.receiveHandlerCloseDatabase(this)
-    }
-
-    override fun onShowAllStudentSuccess(mList: ArrayList<Student>) {
-        arrST = mList
-        setAdapter(mList)
-    }
-
-    override fun onShowAllStudentFail() {
-        Toast.makeText(this, "Database null", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onDeleteStudentSuccess(position: Int) {
-        studentsAdapter.onSwipeAdapter(position)
-        Toast.makeText(
-            this@MainActivity,
-            "Delete student success!",
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-
-    override fun onDeleteStudentFail() {
-        Toast.makeText(
-            this@MainActivity,
-            "Delete student fail!",
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-
-    override fun onUpdateStudentSuccess() {
-        dialog.dismiss()
-        Toast.makeText(this, "Update student success!", Toast.LENGTH_SHORT).show()
-        setAdapter(arrST)
-    }
-
-    override fun onUpdateStudentFail() {
-        Toast.makeText(
-            this@MainActivity,
-            "Update student fail!",
-            Toast.LENGTH_SHORT
-        ).show()
     }
 }

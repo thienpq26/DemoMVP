@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mvppattern.util.BitmapUtils
+import com.example.mvppattern.BitmapUtils
 import com.example.mvppattern.R
-import com.example.mvppattern.data.Student
+import com.example.mvppattern.data.database.model.Student
 
 class StudentsAdapter(val mList: ArrayList<Student>) :
     RecyclerView.Adapter<StudentsAdapter.ViewHolder>() {
