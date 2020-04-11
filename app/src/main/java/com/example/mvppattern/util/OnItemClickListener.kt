@@ -1,4 +1,4 @@
-package com.example.mvppattern
+package com.example.mvppattern.util
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
