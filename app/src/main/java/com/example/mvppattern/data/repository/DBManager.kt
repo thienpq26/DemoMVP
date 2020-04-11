@@ -1,13 +1,16 @@
-package com.example.mvppattern.data.database
+package com.example.mvppattern.data.repository
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.mvppattern.data.database.model.Student
+import com.example.mvppattern.data.Student
 
-class DBManager(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
+class DBManager(var context: Context) : SQLiteOpenHelper(context,
+    DATABASE_NAME, null,
+    VERSION
+) {
 
     private var db: SQLiteDatabase = this.writableDatabase
 

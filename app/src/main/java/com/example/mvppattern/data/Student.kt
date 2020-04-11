@@ -1,4 +1,4 @@
-package com.example.mvppattern.data.database.model
+package com.example.mvppattern.data
 
 class Student {
     var mID: Int = 0

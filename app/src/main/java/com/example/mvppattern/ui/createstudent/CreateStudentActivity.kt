@@ -6,15 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
-import com.example.mvppattern.requestStoragePermission
-import com.example.mvppattern.BitmapUtils
+import com.example.mvppattern.util.requestStoragePermission
+import com.example.mvppattern.util.BitmapUtils
 import com.example.mvppattern.R
-import com.example.mvppattern.data.database.model.Student
-import com.example.mvppattern.setContentValues
+import com.example.mvppattern.data.Student
+import com.example.mvppattern.util.setContentValues
 import com.example.mvppattern.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_create_student.*
 
-class CreateStudentActivity : AppCompatActivity(), CreateStudentView {
+class CreateStudentActivity : AppCompatActivity(), CreateStudentContract.View {
 
     lateinit var createStudentPresenter: CreateStudentPresenter
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,12 +63,12 @@ class CreateStudentActivity : AppCompatActivity(), CreateStudentView {
         }
     }
 
-    override fun createStudentSuccess() {
+    override fun onCreateStudentSuccess() {
         Toast.makeText(this, "Insert student success !", Toast.LENGTH_SHORT).show()
         startActivity(Intent(this, MainActivity::class.java))
     }
 
-    override fun createStudentFail() {
+    override fun onCreateStudentFail() {
         Toast.makeText(this, "Insert student fail !", Toast.LENGTH_SHORT).show()
     }
 }
