@@ -3,33 +3,34 @@ package com.example.mvppattern.ui.main
 import android.content.ContentValues
 import android.content.Context
 import com.example.mvppattern.data.Student
+import com.example.mvppattern.data.repository.DBManager
 
 interface MainContract {
     interface View {
-        fun onShowAllStudentSuccess(mList: ArrayList<Student>)
-        fun onShowAllStudentFail()
-        fun onDeleteStudentSuccess(position: Int)
-        fun onDeleteStudentFail()
-        fun onUpdateStudentSuccess()
-        fun onUpdateStudentFail()
+        fun showAllStudentSuccess(mList: ArrayList<Student>)
+        fun showAllStudentFail()
+        fun deleteStudentSuccess(position: Int)
+        fun deleteStudentFail()
+        fun updateStudentSuccess()
+        fun updateStudentFail()
     }
 
     interface Presenter {
-        fun receiveHandlerGetAllStudent(context: Context)
+        fun receiveHandlerGetAllStudent(dbManager: DBManager)
         fun receiveHandlerDeleteStudent(
-            context: Context,
+            dbManager: DBManager,
             selection: String?,
             selectionArgs: Array<String>?,
             position: Int
         )
 
         fun receiveHandlerUpdateStudent(
-            context: Context,
+            dbManager: DBManager,
             values: ContentValues,
             selection: String?,
             selectionArgs: Array<String>?
         )
 
-        fun receiveHandlerCloseDatabase(context: Context)
+        fun receiveHandlerCloseDatabase(dbManager: DBManager)
     }
 }

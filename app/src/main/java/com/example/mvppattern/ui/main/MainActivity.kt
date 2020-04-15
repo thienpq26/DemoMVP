@@ -34,12 +34,14 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     lateinit var imageStudent: ImageView
     lateinit var mainPresenter: MainPresenter
     lateinit var dialog: Dialog
+    lateinit var dbManager: DBManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         mainPresenter = MainPresenter(this)
-        mainPresenter.receiveHandlerGetAllStudent(this)
+        dbManager = DBManager(this)
+        mainPresenter.receiveHandlerGetAllStudent(dbManager)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -83,7 +85,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                 onItemTouchListenner {
                 override fun onSwipe(position: Int) {
                     mainPresenter.receiveHandlerDeleteStudent(
-                        this@MainActivity, "${DBManager.ID}=?",
+                        dbManager, "${DBManager.ID}=?",
                         arrayOf("${arrST[position].mID}"), position
                     )
                 }
@@ -129,7 +131,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             arrST[position].mEmail = textEmail.text.toString()
             arrST[position].mImage = BitmapUtils.getBytes(imageStudent.drawable.toBitmap())
             mainPresenter.receiveHandlerUpdateStudent(
-                this,
+                dbManager,
                 setContentValues(arrST[position]), "${DBManager.ID}=?",
                 arrayOf("${arrST[position].mID}")
             )
@@ -147,19 +149,19 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        mainPresenter.receiveHandlerCloseDatabase(this)
+        mainPresenter.receiveHandlerCloseDatabase(dbManager)
     }
 
-    override fun onShowAllStudentSuccess(mList: ArrayList<Student>) {
+    override fun showAllStudentSuccess(mList: ArrayList<Student>) {
         arrST = mList
         setAdapter(mList)
     }
 
-    override fun onShowAllStudentFail() {
+    override fun showAllStudentFail() {
         Toast.makeText(this, "Database null", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onDeleteStudentSuccess(position: Int) {
+    override fun deleteStudentSuccess(position: Int) {
         studentsAdapter.onSwipeAdapter(position)
         Toast.makeText(
             this@MainActivity,
@@ -168,7 +170,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         ).show()
     }
 
-    override fun onDeleteStudentFail() {
+    override fun deleteStudentFail() {
         Toast.makeText(
             this@MainActivity,
             "Delete student fail!",
@@ -176,13 +178,13 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         ).show()
     }
 
-    override fun onUpdateStudentSuccess() {
+    override fun updateStudentSuccess() {
         dialog.dismiss()
         Toast.makeText(this, "Update student success!", Toast.LENGTH_SHORT).show()
         setAdapter(arrST)
     }
 
-    override fun onUpdateStudentFail() {
+    override fun updateStudentFail() {
         Toast.makeText(
             this@MainActivity,
             "Update student fail!",

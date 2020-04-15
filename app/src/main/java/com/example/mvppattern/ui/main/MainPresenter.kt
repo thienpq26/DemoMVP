@@ -6,46 +6,41 @@ import com.example.mvppattern.data.repository.DBManager
 
 class MainPresenter(var callback: MainContract.View) : MainContract.Presenter {
 
-    lateinit var dbManager: DBManager
-    override fun receiveHandlerGetAllStudent(context: Context) {
-        dbManager = DBManager(context)
+    override fun receiveHandlerGetAllStudent(dbManager: DBManager) {
         if (dbManager.getAllStudents().isNotEmpty()) {
-            callback.onShowAllStudentSuccess(dbManager.getAllStudents())
+            callback.showAllStudentSuccess(dbManager.getAllStudents())
         } else {
-            callback.onShowAllStudentFail()
+            callback.showAllStudentFail()
         }
     }
 
     override fun receiveHandlerDeleteStudent(
-        context: Context,
+        dbManager: DBManager,
         selection: String?,
         selectionArgs: Array<String>?,
         position: Int
     ) {
-        dbManager = DBManager(context)
         if (dbManager.deleteStudent(selection, selectionArgs) > 0) {
-            callback.onDeleteStudentSuccess(position)
+            callback.deleteStudentSuccess(position)
         } else {
-            callback.onDeleteStudentFail()
+            callback.deleteStudentFail()
         }
     }
 
     override fun receiveHandlerUpdateStudent(
-        context: Context,
+        dbManager: DBManager,
         values: ContentValues,
         selection: String?,
         selectionArgs: Array<String>?
     ) {
-        dbManager = DBManager(context)
         if (dbManager.updateStudent(values, selection, selectionArgs) > 0) {
-            callback.onUpdateStudentSuccess()
+            callback.updateStudentSuccess()
         } else {
-            callback.onUpdateStudentFail()
+            callback.updateStudentFail()
         }
     }
 
-    override fun receiveHandlerCloseDatabase(context: Context) {
-        dbManager = DBManager(context)
+    override fun receiveHandlerCloseDatabase(dbManager: DBManager) {
         dbManager.close()
     }
 }
