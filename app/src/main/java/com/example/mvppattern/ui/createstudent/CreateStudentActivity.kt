@@ -10,6 +10,7 @@ import com.example.mvppattern.util.requestStoragePermission
 import com.example.mvppattern.util.BitmapUtils
 import com.example.mvppattern.R
 import com.example.mvppattern.data.Student
+import com.example.mvppattern.data.repository.DBManager
 import com.example.mvppattern.util.setContentValues
 import com.example.mvppattern.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_create_student.*
@@ -17,10 +18,13 @@ import kotlinx.android.synthetic.main.activity_create_student.*
 class CreateStudentActivity : AppCompatActivity(), CreateStudentContract.View {
 
     lateinit var createStudentPresenter: CreateStudentPresenter
+    lateinit var dbManager: DBManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_student)
         createStudentPresenter = CreateStudentPresenter(this)
+        dbManager = DBManager(this)
 
         buttonReset.setOnClickListener {
             resetEditText()
@@ -32,7 +36,7 @@ class CreateStudentActivity : AppCompatActivity(), CreateStudentContract.View {
 
         buttonCreate.setOnClickListener {
             createStudentPresenter.receiveHandlerCreateStudent(
-                this,
+                dbManager,
                 setContentValues(getEditText())
             )
         }
@@ -63,12 +67,12 @@ class CreateStudentActivity : AppCompatActivity(), CreateStudentContract.View {
         }
     }
 
-    override fun onCreateStudentSuccess() {
+    override fun createStudentSuccess() {
         Toast.makeText(this, "Insert student success !", Toast.LENGTH_SHORT).show()
         startActivity(Intent(this, MainActivity::class.java))
     }
 
-    override fun onCreateStudentFail() {
+    override fun createStudentFail() {
         Toast.makeText(this, "Insert student fail !", Toast.LENGTH_SHORT).show()
     }
 }

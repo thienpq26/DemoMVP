@@ -17,8 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <provider
-            android:name=".provider.StudentsProvider"
-            android:authorities="com.example.mvppattern.provider.StudentsProvider"
+            android:name="com.example.mvppattern.data.local.provider.StudentsProvider"
+            android:authorities="com.example.mvppattern.data.local.provider.StudentsProvider"
             android:enabled="true"
             android:exported="true"
             android:multiprocess="true"

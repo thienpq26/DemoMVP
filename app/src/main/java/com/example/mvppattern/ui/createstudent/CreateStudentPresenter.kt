@@ -4,17 +4,14 @@ import android.content.ContentValues
 import android.content.Context
 import com.example.mvppattern.data.repository.DBManager
 
-class CreateStudentPresenter(var callback: CreateStudentContract.View) :
+class CreateStudentPresenter(private val view: CreateStudentContract.View) :
     CreateStudentContract.Presenter {
 
-    lateinit var dbManager: DBManager
-
-    override fun receiveHandlerCreateStudent(context: Context, values: ContentValues) {
-        dbManager = DBManager(context)
+    override fun receiveHandlerCreateStudent(dbManager: DBManager, values: ContentValues) {
         if (dbManager.insertStudent(values) > 0) {
-            callback.onCreateStudentSuccess()
+            view.createStudentSuccess()
         } else {
-            callback.onCreateStudentFail()
+            view.createStudentFail()
         }
     }
 }

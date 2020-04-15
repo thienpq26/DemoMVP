@@ -1,4 +1,4 @@
-package com.example.mvppattern.provider
+package com.example.mvppattern.data.local.provider
 
 import android.content.ContentProvider
 import android.content.ContentValues

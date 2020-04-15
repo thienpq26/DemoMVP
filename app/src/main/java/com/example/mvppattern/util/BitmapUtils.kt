@@ -1,8 +1,10 @@
 package com.example.mvppattern.util
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
 import android.graphics.BitmapFactory
+import android.provider.MediaStore
 import android.util.Base64
 import java.io.ByteArrayOutputStream
 
@@ -21,5 +23,6 @@ class BitmapUtils {
         fun getImage(image: ByteArray): Bitmap {
             return BitmapFactory.decodeByteArray(image, 0, image.size)
         }
+
     }
 }
